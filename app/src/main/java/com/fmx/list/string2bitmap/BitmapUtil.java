@@ -82,11 +82,7 @@ public class BitmapUtil {
         }
         Bitmap bitmap = Bitmap.createBitmap(WIDTH, FontHeight * (mBreakString.size() + bNum), Bitmap.Config.RGB_565);
 
-        for (int i = 0; i < bitmap.getWidth(); i++) {
-            for (int j = 0; j < bitmap.getHeight(); j++) {
-                bitmap.setPixel(i, j, Color.WHITE);
-            }
-        }
+        drawWhiteBackground(bitmap);
 
         Canvas canvas = new Canvas(bitmap);
 
@@ -131,11 +127,8 @@ public class BitmapUtil {
         int height = first.getHeight() + second.getHeight();
         Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 
-        for (int i = 0; i < result.getWidth(); i++) {
-            for (int j = 0; j < result.getHeight(); j++) {
-                result.setPixel(i, j, Color.WHITE);
-            }
-        }
+        drawWhiteBackground(result);
+
         Canvas canvas = new Canvas(result);
         canvas.drawBitmap(first, startWidth, 0, null);
         canvas.drawBitmap(second, 0, first.getHeight(), null);
@@ -152,15 +145,26 @@ public class BitmapUtil {
         int height = bitmap.getHeight() + image.getHeight();
         Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 
-        for (int i = 0; i < result.getWidth(); i++) {
-            for (int j = 0; j < result.getHeight(); j++) {
-                result.setPixel(i, j, Color.WHITE);
-            }
-        }
+        drawWhiteBackground(result);
+        
         Canvas canvas = new Canvas(result);
         canvas.drawBitmap(bitmap, 0, 0, null);
         canvas.drawBitmap(image, startWidth, bitmap.getHeight(), null);
         return result;
+    }
+
+    private static void drawWhiteBackground(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int length = width * height;
+        int[] pixels = new int[width * height];
+        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
+
+        for (int i = 0; i < length; i++) {
+            pixels[i] = Color.rgb(255, 255, 255);
+        }
+
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
     }
 
 }
